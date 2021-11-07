@@ -1,0 +1,4 @@
+TRUNCATE
+  exercises,
+  workouts,
+  users;
