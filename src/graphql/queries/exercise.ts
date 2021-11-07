@@ -1,4 +1,4 @@
-import db from "../.././db";
+import db from '../.././db';
 
 const serializeExercise = (exercise: any) => ({
   id: exercise.id,
@@ -6,18 +6,22 @@ const serializeExercise = (exercise: any) => ({
   muscle: exercise.muscle,
 });
 
-export default async function getExercise(args: any) {
+interface Args {
+  id: string;
+}
+
+export default async function getExercise(parent: any, args: Args) {
   try {
     const { id } = args;
-    const exerciseData = await db.query(`
+    const data = await db.query(`
       SELECT * FROM exercises
       WHERE id = ${id}
     `);
-    const exercise = serializeExercise(exerciseData.rows[0]);
-    return exercise;
+    if (data.rows.length) {
+      const exercise = serializeExercise(data.rows[0]);
+      return exercise;
+    }
   } catch (error) {
-    // throw new Error(error?.detail);
-    console.log(error);
-
+    throw error;
   }
 }

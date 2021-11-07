@@ -4,8 +4,11 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
+    "migrate": "postgrator --config postgrator-config.js",
+    "seed": "psql -U jessetran -d aimfit-postgres -f ./seeds/seed.aimfit_tables.sql",
     "start": "node src/index.js",
-    "dev": "nodemon src/index.ts"
+    "dev": "nodemon src/index.ts",
+    "deploy": "git push heroku main"
   },
   "dependencies": {
     "apollo-server-express": "^3.5.0",

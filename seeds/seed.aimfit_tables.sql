@@ -1,5 +1,3 @@
--- psql -U jessetran -d aimfit-postgres -f ./seeds/seed.aimfit_tables.sql
-
 BEGIN;
 
 TRUNCATE
@@ -65,8 +63,8 @@ VALUES
   (47, 'Hack Squat', 'Hamstrings'),
   (48, 'Standing Calf Raise', 'Calves');
 
-INSERT INTO workouts (user_id, day, title)
-VALUES (1, 'Monday', 'Push Workout');
+INSERT INTO workouts (id, user_id, day, title)
+VALUES (1, 1, 'Monday', 'Push Workout');
 
 INSERT INTO workout_exercises (id, workout_id, exercise_id)
 VALUES

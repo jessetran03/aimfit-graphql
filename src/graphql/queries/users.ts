@@ -11,13 +11,12 @@ const serializeUser = (user: any) => ({
 
 export default async function getUsers() {
   try {
-    const usersData = await db.query('SELECT * FROM users');
-    if (usersData.rows.length) {
-      const users = usersData.rows.map(serializeUser);
+    const data = await db.query('SELECT * FROM users');
+    if (data.rows.length) {
+      const users = data.rows.map(serializeUser);
       return users;
     }
   } catch (error) {
-    // throw new Error(error?.detail);
-    console.log(error);
+    throw error;
   }
 }
