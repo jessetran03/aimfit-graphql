@@ -9,12 +9,15 @@
   },
   "scripts": {
     "migrate": "postgrator --config postgrator-config.js",
+    "migrate:production": "heroku run yarn migrate",
     "seed": "psql -U jessetran -d aimfit-postgres -f ./seeds/seed.aimfit_tables.sql",
     "dev": "nodemon src/index.ts",
     "start": "node dist",
     "build": "tsc",
     "predeploy": "yarn audit && yarn build",
-    "deploy": "git push heroku main"
+    "deploy": "git push heroku main",
+    "postdeploy": "yarn migrate:production",
+    "psql": "yarn pg:psql"
   },
   "dependencies": {
     "apollo-server-express": "^3.5.0",
