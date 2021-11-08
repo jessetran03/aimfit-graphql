@@ -11,8 +11,9 @@
     "migrate": "postgrator --config postgrator-config.js",
     "seed": "psql -U jessetran -d aimfit-postgres -f ./seeds/seed.aimfit_tables.sql",
     "dev": "nodemon src/index.ts",
-    "start": "ts-node dist",
+    "start": "node dist",
     "build": "tsc",
+    "predeploy": "yarn audit && yarn build",
     "deploy": "git push heroku main"
   },
   "dependencies": {
