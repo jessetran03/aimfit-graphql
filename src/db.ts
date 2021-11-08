@@ -1,7 +1,7 @@
 import { Pool } from 'pg';
-import { POSTGRES_URI } from './config';
+import { DATABASE_URL } from './config';
 
-const connectionString = POSTGRES_URI;
+const connectionString = DATABASE_URL;
 
 const db = new Pool({
   connectionString,

@@ -1,2 +1,2 @@
-export const POSTGRES_URI = process.env.POSTGRES_URI
+export const DATABASE_URL = process.env.DATABASE_URL
 export const PORT = process.env.PORT || 9000
