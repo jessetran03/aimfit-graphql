@@ -5,6 +5,7 @@ import Query from './graphql/queries';
 import Mutation from './graphql/mutations';
 import typeDefs from './graphql/types';
 import { ApolloServer } from 'apollo-server-express';
+import { PORT } from './config';
 
 const startServer = async () => {
   const app = express();
@@ -17,7 +18,7 @@ const startServer = async () => {
   await server.start();
   server.applyMiddleware({ app, path: '/graphql' });
 
-  app.listen({ port: 9000 }, () => {
+  app.listen({ port: PORT }, () => {
     console.log(
       `✨🚀 Server started on http://localhost:9000${server.graphqlPath} 🚀✨`,
     );

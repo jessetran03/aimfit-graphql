@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "engines": {
+    "node": "16.7.0" 
+  },
   "scripts": {
     "migrate": "postgrator --config postgrator-config.js",
     "seed": "psql -U jessetran -d aimfit-postgres -f ./seeds/seed.aimfit_tables.sql",
