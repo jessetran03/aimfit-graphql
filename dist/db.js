@@ -5,5 +5,8 @@ var config_1 = require("./config");
 var connectionString = config_1.DATABASE_URL;
 var db = new pg_1.Pool({
     connectionString: connectionString,
+    ssl: {
+        rejectUnauthorized: false,
+    },
 });
 exports.default = db;
