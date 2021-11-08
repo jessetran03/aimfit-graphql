@@ -16,7 +16,6 @@
     "build": "tsc",
     "predeploy": "yarn audit && yarn build",
     "deploy": "git push heroku main",
-    "postdeploy": "yarn migrate:production",
     "psql": "heroku pg:psql"
   },
   "dependencies": {
