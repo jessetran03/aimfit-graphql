@@ -1,5 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PORT = exports.POSTGRES_URI = void 0;
-exports.POSTGRES_URI = process.env.POSTGRES_URI;
+exports.PORT = exports.DATABASE_URL = void 0;
+exports.DATABASE_URL = process.env.DATABASE_URL;
 exports.PORT = process.env.PORT || 9000;
