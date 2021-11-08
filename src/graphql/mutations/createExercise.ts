@@ -1,13 +1,6 @@
 import db from '../.././db';
 
-const serializeExercise = (exercise: any) => ({
-  id: exercise.id,
-  name: exercise.exercise_name,
-  muscle: exercise.muscle,
-});
-
-
-export default async function createExercise(parent: any, args: any) {
+export default async function createExercise(parent: any, args: Args) {
   try {
     const { name, muscle } = args.input;
     const data = await db.query(`
@@ -18,6 +11,21 @@ export default async function createExercise(parent: any, args: any) {
     const newExercise = serializeExercise(data.rows[0]);
     return newExercise;
   } catch (error) {
-    throw new Error(error?.detail);
+    throw error;
   }
+}
+
+const serializeExercise = (exercise: any) => ({
+  id: exercise.id,
+  name: exercise.exercise_name,
+  muscle: exercise.muscle,
+});
+
+interface Args {
+  input: Input
+}
+
+interface Input {
+  name: string
+  muscle: string
 }
