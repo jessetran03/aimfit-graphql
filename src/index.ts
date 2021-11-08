@@ -4,7 +4,7 @@ import cors from 'cors';
 import Query from './graphql/queries';
 import Mutation from './graphql/mutations';
 import typeDefs from './graphql/types';
-import { ApolloServer, gql } from 'apollo-server-express';
+import { ApolloServer } from 'apollo-server-express';
 
 const startServer = async () => {
   const app = express();
