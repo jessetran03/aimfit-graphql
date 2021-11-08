@@ -1,7 +1,8 @@
 {
   "name": "aimfit-graphql",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "./dist/index",
+  "types": "./dist/index",
   "license": "MIT",
   "engines": {
     "node": "16.7.0" 
@@ -9,8 +10,9 @@
   "scripts": {
     "migrate": "postgrator --config postgrator-config.js",
     "seed": "psql -U jessetran -d aimfit-postgres -f ./seeds/seed.aimfit_tables.sql",
-    "start": "node src/index.js",
     "dev": "nodemon src/index.ts",
+    "start": "ts-node dist",
+    "build": "tsc",
     "deploy": "git push heroku main"
   },
   "dependencies": {
