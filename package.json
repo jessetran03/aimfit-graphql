@@ -17,7 +17,7 @@
     "predeploy": "yarn audit && yarn build",
     "deploy": "git push heroku main",
     "postdeploy": "yarn migrate:production",
-    "psql": "yarn pg:psql"
+    "psql": "heroku pg:psql"
   },
   "dependencies": {
     "apollo-server-express": "^3.5.0",
