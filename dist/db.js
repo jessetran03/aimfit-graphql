@@ -6,7 +6,7 @@ var connectionString = config_1.DATABASE_URL;
 var db = new pg_1.Pool({
     connectionString: connectionString,
     ssl: {
-        rejectUnauthorized: false,
+        rejectUnauthorized: config_1.NODE_ENV === 'production' ? false : true,
     },
 });
 exports.default = db;
