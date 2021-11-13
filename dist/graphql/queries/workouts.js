@@ -42,7 +42,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var db_1 = __importDefault(require("../.././db"));
 var serializeWorkout = function (workout) { return ({
     id: workout.id,
-    userId: workout.user_id,
+    user: {
+        id: workout.user_id,
+        username: workout.user_name,
+        firstName: workout.first_name,
+        lastName: workout.last_name,
+        dateCreated: workout.date_created,
+        dateModified: workout.date_modified,
+        password: workout.password,
+    },
     title: workout.title,
     day: workout.day,
 }); };
@@ -54,9 +62,10 @@ function getWorkouts() {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
                     userId = 1;
-                    return [4 /*yield*/, db_1.default.query("\n      SELECT * FROM workouts\n      WHERE user_id = " + userId + "\n    ")];
+                    return [4 /*yield*/, db_1.default.query("\n      SELECT\n        workouts.id as id,\n        users.id as user_id,\n        day,\n        title,\n        user_name,\n        first_name,\n        last_name,\n        password\n      FROM workouts\n      INNER JOIN users ON\n        workouts.user_id = users.id\n      WHERE user_id = " + userId + "\n    ")];
                 case 1:
                     data = _a.sent();
+                    console.log(data.rows);
                     workouts = data.rows.map(serializeWorkout);
                     return [2 /*return*/, workouts];
                 case 2:

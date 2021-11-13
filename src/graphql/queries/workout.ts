@@ -15,30 +15,25 @@ const serializeWorkout = (workout: any) => ({
   day: workout.day,
 });
 
-export default async function getWorkouts() {
+interface Args {
+  id: string;
+}
+
+export default async function getWorkout(parent: any, args: Args) {
   try {
-    // console.log('starting');
-    // const userId = user.user_id;
+    const { id } = args;
     const userId = 1;
-    // console.log(userId);
     const data = await db.query(`
-      SELECT
-        workouts.id as id,
-        users.id as user_id,
-        day,
-        title,
-        user_name,
-        first_name,
-        last_name,
-        password
-      FROM workouts
+      SELECT * FROM workouts
       INNER JOIN users ON
-        workouts.user_id = users.id
-      WHERE user_id = ${userId}
+        workouts.user_id = ${userId}
+      WHERE workouts.id = ${id}
     `);
     console.log(data.rows)
-    const workouts = data.rows.map(serializeWorkout);
-    return workouts;
+    if (data.rows.length) {
+      const workout = serializeWorkout(data.rows[0]);
+      return workout;
+    }
   } catch (error) {
     throw error;
   }

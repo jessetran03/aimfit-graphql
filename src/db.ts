@@ -5,9 +5,7 @@ const connectionString = DATABASE_URL;
 
 const db = new Pool({
   connectionString,
-  ssl: {
-    rejectUnauthorized: NODE_ENV === 'production' ? false : true,
-  },
+  ssl: NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
 });
 
 export default db;

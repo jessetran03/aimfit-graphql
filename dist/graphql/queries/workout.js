@@ -40,40 +40,38 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var db_1 = __importDefault(require("../.././db"));
-var serializeWorkoutExercise = function (workoutExercise) { return ({
-    id: workoutExercise.id,
-    workout: {
-        id: workoutExercise.workout_id,
-        user: {
-            id: workoutExercise.user_id,
-            username: workoutExercise.user_name,
-            firstName: workoutExercise.first_name,
-            lastName: workoutExercise.last_name,
-            dateCreated: workoutExercise.date_created,
-            dateModified: workoutExercise.date_modified,
-            password: workoutExercise.password,
-        },
-        day: workoutExercise.day,
-        title: workoutExercise.title,
+var serializeWorkout = function (workout) { return ({
+    id: workout.id,
+    user: {
+        id: workout.user_id,
+        username: workout.user_name,
+        firstName: workout.first_name,
+        lastName: workout.last_name,
+        dateCreated: workout.date_created,
+        dateModified: workout.date_modified,
+        password: workout.password,
     },
-    exercise: {
-        id: workoutExercise.exercise_id,
-        name: workoutExercise.exercise_name,
-        muscle: workoutExercise.muscle,
-    },
+    title: workout.title,
+    day: workout.day,
 }); };
-function getWorkoutExercises() {
+function getWorkout(parent, args) {
     return __awaiter(this, void 0, void 0, function () {
-        var data, workoutExercises, error_1;
+        var id, userId, data, workout, error_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, db_1.default.query("\n      SELECT \n        workout_exercises.id,\n        workouts.id as workout_id,\n        exercises.id as exercise_id,\n        users.id as user_id,\n        day,\n        title,\n        user_name,\n        first_name, \n        last_name,\n        password,\n        exercise_name,\n        muscle\n      FROM workout_exercises\n      INNER JOIN workouts ON\n        workout_exercises.workout_id = workouts.id\n      INNER JOIN users ON\n        workouts.user_id = users.id\n      INNER JOIN exercises ON\n        workout_exercises.exercise_id = exercises.id;\n    ")];
+                    id = args.id;
+                    userId = 1;
+                    return [4 /*yield*/, db_1.default.query("\n      SELECT * FROM workouts\n      INNER JOIN users ON\n        workouts.user_id = " + userId + "\n      WHERE workouts.id = " + id + "\n    ")];
                 case 1:
                     data = _a.sent();
-                    workoutExercises = data.rows.map(serializeWorkoutExercise);
-                    return [2 /*return*/, workoutExercises];
+                    console.log(data.rows);
+                    if (data.rows.length) {
+                        workout = serializeWorkout(data.rows[0]);
+                        return [2 /*return*/, workout];
+                    }
+                    return [3 /*break*/, 3];
                 case 2:
                     error_1 = _a.sent();
                     throw error_1;
@@ -82,4 +80,4 @@ function getWorkoutExercises() {
         });
     });
 }
-exports.default = getWorkoutExercises;
+exports.default = getWorkout;

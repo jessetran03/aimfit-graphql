@@ -40,16 +40,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var db_1 = __importDefault(require("../.././db"));
-var serializeWorkout = function (workout) { return ({
-    id: workout.id,
-    userId: workout.user_id,
-    title: workout.title,
-    day: workout.day,
-}); };
 function createWorkout(parent, args, _a) {
     var user = _a.user;
     return __awaiter(this, void 0, void 0, function () {
-        var _b, day, title, userId, data, newWorkout, error_1;
+        var _b, day, title, userId, data, workoutTitle, message, error_1;
         return __generator(this, function (_c) {
             switch (_c.label) {
                 case 0:
@@ -59,8 +53,9 @@ function createWorkout(parent, args, _a) {
                     return [4 /*yield*/, db_1.default.query("\n      INSERT INTO workouts (user_id, day, title)\n      VALUES (" + userId + ", '" + day + "', '" + title + "')\n      RETURNING *\n    ")];
                 case 1:
                     data = _c.sent();
-                    newWorkout = serializeWorkout(data.rows[0]);
-                    return [2 /*return*/, newWorkout];
+                    workoutTitle = data.rows[0].title;
+                    message = workoutTitle + " has been created.";
+                    return [2 /*return*/, message];
                 case 2:
                     error_1 = _c.sent();
                     throw error_1;

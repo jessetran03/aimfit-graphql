@@ -39,47 +39,26 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var db_1 = __importDefault(require("../.././db"));
-var serializeWorkoutExercise = function (workoutExercise) { return ({
-    id: workoutExercise.id,
-    workout: {
-        id: workoutExercise.workout_id,
-        user: {
-            id: workoutExercise.user_id,
-            username: workoutExercise.user_name,
-            firstName: workoutExercise.first_name,
-            lastName: workoutExercise.last_name,
-            dateCreated: workoutExercise.date_created,
-            dateModified: workoutExercise.date_modified,
-            password: workoutExercise.password,
-        },
-        day: workoutExercise.day,
-        title: workoutExercise.title,
-    },
-    exercise: {
-        id: workoutExercise.exercise_id,
-        name: workoutExercise.exercise_name,
-        muscle: workoutExercise.muscle,
-    },
-}); };
-function getWorkoutExercises() {
+var db_1 = __importDefault(require("../../db"));
+function addWorkoutExercise(parent, args) {
     return __awaiter(this, void 0, void 0, function () {
-        var data, workoutExercises, error_1;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
+        var _a, workoutId, exerciseId, data, message, error_1;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
                 case 0:
-                    _a.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, db_1.default.query("\n      SELECT \n        workout_exercises.id,\n        workouts.id as workout_id,\n        exercises.id as exercise_id,\n        users.id as user_id,\n        day,\n        title,\n        user_name,\n        first_name, \n        last_name,\n        password,\n        exercise_name,\n        muscle\n      FROM workout_exercises\n      INNER JOIN workouts ON\n        workout_exercises.workout_id = workouts.id\n      INNER JOIN users ON\n        workouts.user_id = users.id\n      INNER JOIN exercises ON\n        workout_exercises.exercise_id = exercises.id;\n    ")];
+                    _b.trys.push([0, 2, , 3]);
+                    _a = args.input, workoutId = _a.workoutId, exerciseId = _a.exerciseId;
+                    return [4 /*yield*/, db_1.default.query("\n      INSERT INTO workout_exercises (workout_id, exercise_id)\n      VALUES ('" + workoutId + "', '" + exerciseId + "')\n    ")];
                 case 1:
-                    data = _a.sent();
-                    workoutExercises = data.rows.map(serializeWorkoutExercise);
-                    return [2 /*return*/, workoutExercises];
+                    data = _b.sent();
+                    message = 'Exercise has been added to workout.';
+                    return [2 /*return*/, message];
                 case 2:
-                    error_1 = _a.sent();
+                    error_1 = _b.sent();
                     throw error_1;
                 case 3: return [2 /*return*/];
             }
         });
     });
 }
-exports.default = getWorkoutExercises;
+exports.default = addWorkoutExercise;

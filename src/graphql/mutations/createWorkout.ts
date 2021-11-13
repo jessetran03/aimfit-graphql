@@ -1,12 +1,5 @@
 import db from '../.././db';
 
-const serializeWorkout = (workout: any) => ({
-  id: workout.id,
-  userId: workout.user_id,
-  title: workout.title,
-  day: workout.day,
-})
-
 interface Args {
   input: Input;
 }
@@ -25,8 +18,9 @@ export default async function createWorkout(parent: any, args: Args, { user }: a
       VALUES (${userId}, '${day}', '${title}')
       RETURNING *
     `);
-    const newWorkout = serializeWorkout(data.rows[0]);
-    return newWorkout;
+    const workoutTitle = data.rows[0].title;
+    const message = `${workoutTitle} has been created.`
+    return message;
   } catch (error) {
     throw error;
   }

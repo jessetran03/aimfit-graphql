@@ -1,11 +1,12 @@
 import { gql } from 'apollo-server-express';
-// import User from './User';
 
 const typeDefs = gql`
   type Query {
     users: [User]
     exercises: [Exercise]
     exercise(id: ID!): Exercise
+    exerciseLog: [LogEntry]
+    logEntry(id: ID!): LogEntry
     workouts: [Workout]
     workout(id: ID!): Workout
     workoutExercises: [WorkoutExercise]
@@ -14,7 +15,8 @@ const typeDefs = gql`
   type Mutation {
     newUser(input: CreateUserInput): User
     newExercise(input: CreateExerciseInput): Exercise
-    newWorkout(input: CreateWorkoutInput): Workout
+    newWorkout(input: CreateWorkoutInput): String
+    newWorkoutExercise(input: AddWorkoutExerciseInput): String
     deleteWorkout(id: ID!): String
   }
 
@@ -34,15 +36,30 @@ const typeDefs = gql`
 
   type Workout {
     id: ID!
-    userId: ID!
+    user: User
     day: String
     title: String
   }
 
   type WorkoutExercise {
     id: ID!
-    workoutId: ID!
+    workout: Workout
     exercise: Exercise
+  }
+
+  type LogEntry {
+    id: ID!
+    exercise: Exercise
+    user: User
+    setCount: Float
+    repCount: Float
+    weightCount: Float
+    dateLogged: String
+  }
+
+  input AddWorkoutExerciseInput {
+    workoutId: ID!
+    exerciseId: ID!
   }
 
   input CreateUserInput {
