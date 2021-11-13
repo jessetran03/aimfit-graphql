@@ -59,24 +59,31 @@ var serializeLogEntry = function (logEntry) { return ({
     weightCount: logEntry.weight_count,
     dateLogged: logEntry.date_logged
 }); };
-function getExerciseLog() {
+function getExerciseLog(parent, args) {
     return __awaiter(this, void 0, void 0, function () {
-        var userId, data, exerciseLog, error_1;
+        var filterLine, exerciseId, userId, data, exerciseLog, error_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 2, , 3]);
-                    userId = 1;
-                    return [4 /*yield*/, db_1.default.query("\n      SELECT\n        exercise_log.id as id,\n        exercises.id as exercise_id,\n        users.id as user_id,\n        set_count,\n        rep_count,\n        weight_count,\n        date_logged,\n        exercise_name,\n        muscle,\n        user_name,\n        first_name,\n        last_name,\n        password\n      FROM exercise_log\n      INNER JOIN exercises ON\n        exercise_log.exercise_id = exercises.id\n      INNER JOIN users ON\n        exercise_log.user_id = users.id\n      WHERE exercise_log.user_id = " + userId + "\n    ")];
+                    filterLine = '';
+                    if (args === null || args === void 0 ? void 0 : args.exerciseId) {
+                        exerciseId = args.exerciseId;
+                        filterLine = "AND exercise_log.exercise_id = " + exerciseId;
+                    }
+                    _a.label = 1;
                 case 1:
+                    _a.trys.push([1, 3, , 4]);
+                    userId = 1;
+                    return [4 /*yield*/, db_1.default.query("\n      SELECT\n        exercise_log.id as id,\n        exercises.id as exercise_id,\n        users.id as user_id,\n        set_count,\n        rep_count,\n        weight_count,\n        date_logged,\n        exercise_name,\n        muscle,\n        user_name,\n        first_name,\n        last_name,\n        password\n      FROM exercise_log\n      INNER JOIN exercises ON\n        exercise_log.exercise_id = exercises.id\n      INNER JOIN users ON\n        exercise_log.user_id = users.id\n      WHERE exercise_log.user_id = " + userId + "\n      " + filterLine + "\n    ")];
+                case 2:
                     data = _a.sent();
                     console.log({ data: data.rows });
                     exerciseLog = data.rows.map(serializeLogEntry);
                     return [2 /*return*/, exerciseLog];
-                case 2:
+                case 3:
                     error_1 = _a.sent();
                     throw error_1;
-                case 3: return [2 /*return*/];
+                case 4: return [2 /*return*/];
             }
         });
     });
