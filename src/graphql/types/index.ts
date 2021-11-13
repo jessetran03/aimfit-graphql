@@ -5,7 +5,7 @@ const typeDefs = gql`
     users: [User]
     exercises: [Exercise]
     exercise(id: ID!): Exercise
-    exerciseLog: [LogEntry]
+    exerciseLog(exerciseId: ID): [LogEntry]
     logEntry(id: ID!): LogEntry
     workouts: [Workout]
     workout(id: ID!): Workout

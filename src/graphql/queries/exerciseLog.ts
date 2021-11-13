@@ -20,7 +20,16 @@ const serializeLogEntry = (logEntry: any) => ({
   dateLogged: logEntry.date_logged
 });
 
-export default async function getExerciseLog() {
+interface Args {
+  exerciseId: string;
+}
+
+export default async function getExerciseLog(parent: any, args: Args) {
+  let filterLine = '';
+  if (args?.exerciseId) {
+    const exerciseId = args.exerciseId;
+    filterLine = `AND exercise_log.exercise_id = ${exerciseId}`;
+  }
   try {
     const userId = 1;
     const data = await db.query(`
@@ -44,6 +53,7 @@ export default async function getExerciseLog() {
       INNER JOIN users ON
         exercise_log.user_id = users.id
       WHERE exercise_log.user_id = ${userId}
+      ${filterLine}
     `);
     console.log({ data: data.rows })
     const exerciseLog = data.rows.map(serializeLogEntry);
