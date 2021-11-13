@@ -15,6 +15,7 @@ const typeDefs = gql`
   type Mutation {
     newUser(input: CreateUserInput): User
     newExercise(input: CreateExerciseInput): Exercise
+    newLogEntry(input: AddLogEntry): String
     newWorkout(input: CreateWorkoutInput): String
     newWorkoutExercise(input: AddWorkoutExerciseInput): String
     deleteWorkout(id: ID!): String
@@ -55,6 +56,13 @@ const typeDefs = gql`
     repCount: Float
     weightCount: Float
     dateLogged: String
+  }
+
+  input AddLogEntry {
+    exerciseId: ID!
+    setCount: Float
+    repCount: Float
+    weightCount: Float
   }
 
   input AddWorkoutExerciseInput {
