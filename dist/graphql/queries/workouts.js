@@ -1,4 +1,15 @@
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -54,24 +65,44 @@ var serializeWorkout = function (workout) { return ({
     title: workout.title,
     day: workout.day,
 }); };
-function getWorkouts() {
+var serializeExercise = function (exercise) { return ({
+    id: exercise.exercise_id,
+    muscle: exercise.muscle,
+    name: exercise.exercise_name,
+}); };
+function getWorkouts(parent, args) {
     return __awaiter(this, void 0, void 0, function () {
-        var userId, data, workouts, error_1;
+        var filter, id, userId, data, exerciseData, workoutExercises_1, workouts, workoutsFull, error_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 2, , 3]);
+                    _a.trys.push([0, 3, , 4]);
+                    filter = '';
+                    if (args === null || args === void 0 ? void 0 : args.id) {
+                        id = args.id;
+                        filter = "AND workouts.id = " + id;
+                    }
                     userId = 1;
-                    return [4 /*yield*/, db_1.default.query("\n      SELECT\n        workouts.id as id,\n        users.id as user_id,\n        day,\n        title,\n        user_name,\n        first_name,\n        last_name,\n        password\n      FROM workouts\n      INNER JOIN users ON\n        workouts.user_id = users.id\n      WHERE user_id = " + userId + "\n    ")];
+                    return [4 /*yield*/, db_1.default.query("\n      SELECT\n        workouts.id as id,\n        users.id as user_id,\n        day,\n        title,\n        user_name,\n        first_name,\n        last_name,\n        password\n      FROM workouts\n      INNER JOIN users ON\n        workouts.user_id = users.id\n      WHERE user_id = " + userId + "\n      " + filter + "\n    ")];
                 case 1:
                     data = _a.sent();
-                    console.log(data.rows);
-                    workouts = data.rows.map(serializeWorkout);
-                    return [2 /*return*/, workouts];
+                    return [4 /*yield*/, db_1.default.query("\n      SELECT\n        workout_exercises.id,\n        workouts.id as workout_id,\n        exercises.id as exercise_id,\n        muscle,\n        exercise_name\n      FROM workout_exercises\n      INNER JOIN workouts\n      ON workout_exercises.workout_id = workouts.id\n      INNER JOIN exercises\n      ON workout_exercises.exercise_id = exercises.id;\n    ")];
                 case 2:
+                    exerciseData = _a.sent();
+                    workoutExercises_1 = exerciseData.rows;
+                    workouts = data.rows.map(serializeWorkout);
+                    workoutsFull = workouts.map(function (workout) {
+                        var exercises = workoutExercises_1
+                            .filter(function (workoutExercise) { return workoutExercise.workout_id === workout.id; })
+                            .map(serializeExercise);
+                        var workoutFull = __assign(__assign({}, workout), { exercises: exercises });
+                        return workoutFull;
+                    });
+                    return [2 /*return*/, workoutsFull];
+                case 3:
                     error_1 = _a.sent();
                     throw error_1;
-                case 3: return [2 /*return*/];
+                case 4: return [2 /*return*/];
             }
         });
     });
