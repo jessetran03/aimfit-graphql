@@ -25,10 +25,10 @@ interface Args {
 }
 
 export default async function getExerciseLog(parent: any, args: Args) {
-  let filterLine = '';
+  let filter = '';
   if (args?.exerciseId) {
     const exerciseId = args.exerciseId;
-    filterLine = `AND exercise_log.exercise_id = ${exerciseId}`;
+    filter = `AND exercise_log.exercise_id = ${exerciseId}`;
   }
   try {
     const userId = 1;
@@ -53,7 +53,7 @@ export default async function getExerciseLog(parent: any, args: Args) {
       INNER JOIN users ON
         exercise_log.user_id = users.id
       WHERE exercise_log.user_id = ${userId}
-      ${filterLine}
+      ${filter}
     `);
     console.log({ data: data.rows })
     const exerciseLog = data.rows.map(serializeLogEntry);

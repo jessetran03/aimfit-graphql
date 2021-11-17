@@ -15,12 +15,25 @@ const serializeWorkout = (workout: any) => ({
   day: workout.day,
 });
 
-export default async function getWorkouts() {
+const serializeExercise = (exercise: any) => ({
+  id: exercise.exercise_id,
+  muscle: exercise.muscle,
+  name: exercise.exercise_name,
+});
+
+interface Args {
+  id: string;
+}
+
+export default async function getWorkouts(parent: any, args: Args) {
   try {
-    // console.log('starting');
     // const userId = user.user_id;
+    let filter = '';
+    if (args?.id) {
+      const id = args.id;
+      filter = `AND workouts.id = ${id}`;
+    }
     const userId = 1;
-    // console.log(userId);
     const data = await db.query(`
       SELECT
         workouts.id as id,
@@ -35,10 +48,31 @@ export default async function getWorkouts() {
       INNER JOIN users ON
         workouts.user_id = users.id
       WHERE user_id = ${userId}
+      ${filter}
     `);
-    console.log(data.rows)
+    const exerciseData = await db.query(`
+      SELECT
+        workout_exercises.id,
+        workouts.id as workout_id,
+        exercises.id as exercise_id,
+        muscle,
+        exercise_name
+      FROM workout_exercises
+      INNER JOIN workouts
+      ON workout_exercises.workout_id = workouts.id
+      INNER JOIN exercises
+      ON workout_exercises.exercise_id = exercises.id;
+    `);
+    const workoutExercises = exerciseData.rows;
     const workouts = data.rows.map(serializeWorkout);
-    return workouts;
+    const workoutsFull = workouts.map((workout) => {
+      const exercises = workoutExercises
+        .filter((workoutExercise) => workoutExercise.workout_id === workout.id)
+        .map(serializeExercise);
+      const workoutFull = { ...workout, exercises };
+      return workoutFull;
+    });
+    return workoutsFull;
   } catch (error) {
     throw error;
   }
