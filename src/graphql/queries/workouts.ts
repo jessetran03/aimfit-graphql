@@ -25,15 +25,18 @@ interface Args {
   id: string;
 }
 
-export default async function getWorkouts(parent: any, args: Args) {
+export default async function getWorkouts(
+  parent: any,
+  args: Args,
+  context: any,
+) {
   try {
-    // const userId = user.user_id;
+    const userId = context.user;
     let filter = '';
     if (args?.id) {
       const id = args.id;
       filter = `AND workouts.id = ${id}`;
     }
-    const userId = 1;
     const data = await db.query(`
       SELECT
         workouts.id as id,

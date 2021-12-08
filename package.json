@@ -19,11 +19,15 @@
     "psql": "heroku pg:psql"
   },
   "dependencies": {
+    "@types/express-jwt": "^6.0.2",
+    "@types/jsonwebtoken": "^8.5.6",
     "apollo-server-express": "^3.5.0",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "express-jwt": "^6.1.0",
     "graphql": "^16.0.1",
+    "jsonwebtoken": "^8.5.1",
     "pg": "^8.7.1",
     "postgrator-cli": "^4.0.0"
   },
