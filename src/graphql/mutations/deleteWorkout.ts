@@ -11,7 +11,6 @@ export default async function deleteWorkout(parent: any, args: Args) {
       DELETE FROM workouts
       WHERE id = ${id}
     `);
-    console.log(data);
     return "Workout successfully deleted";
   } catch (error) {
     throw error;

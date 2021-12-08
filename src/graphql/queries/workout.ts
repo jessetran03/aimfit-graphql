@@ -29,7 +29,6 @@ export default async function getWorkout(parent: any, args: Args) {
         workouts.user_id = ${userId}
       WHERE workouts.id = ${id}
     `);
-    console.log(data.rows)
     if (data.rows.length) {
       const workout = serializeWorkout(data.rows[0]);
       return workout;

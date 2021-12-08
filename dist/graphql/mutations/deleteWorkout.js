@@ -51,7 +51,6 @@ function deleteWorkout(parent, args) {
                     return [4 /*yield*/, db_1.default.query("\n      DELETE FROM workouts\n      WHERE id = " + id + "\n    ")];
                 case 1:
                     data = _a.sent();
-                    console.log(data);
                     return [2 /*return*/, "Workout successfully deleted"];
                 case 2:
                     error_1 = _a.sent();

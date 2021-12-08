@@ -74,10 +74,9 @@ function getExerciseLog(parent, args) {
                 case 1:
                     _a.trys.push([1, 3, , 4]);
                     userId = 1;
-                    return [4 /*yield*/, db_1.default.query("\n      SELECT\n        exercise_log.id as id,\n        exercises.id as exercise_id,\n        users.id as user_id,\n        set_count,\n        rep_count,\n        weight_count,\n        date_logged,\n        exercise_name,\n        muscle,\n        user_name,\n        first_name,\n        last_name,\n        password\n      FROM exercise_log\n      INNER JOIN exercises ON\n        exercise_log.exercise_id = exercises.id\n      INNER JOIN users ON\n        exercise_log.user_id = users.id\n      WHERE exercise_log.user_id = " + userId + "\n      " + filter + "\n    ")];
+                    return [4 /*yield*/, db_1.default.query("\n      SELECT\n        exercise_log.id as id,\n        exercises.id as exercise_id,\n        users.id as user_id,\n        set_count,\n        rep_count,\n        weight_count,\n        date_logged,\n        exercise_name,\n        muscle,\n        user_name,\n        first_name,\n        last_name,\n        password\n      FROM exercise_log\n      INNER JOIN exercises ON\n        exercise_log.exercise_id = exercises.id\n      INNER JOIN users ON\n        exercise_log.user_id = users.id\n      WHERE exercise_log.user_id = " + userId + "\n      " + filter + "\n      ORDER BY date_logged DESC\n    ")];
                 case 2:
                     data = _a.sent();
-                    console.log({ data: data.rows });
                     exerciseLog = data.rows.map(serializeLogEntry);
                     return [2 /*return*/, exerciseLog];
                 case 3:

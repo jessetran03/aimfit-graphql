@@ -54,8 +54,8 @@ export default async function getExerciseLog(parent: any, args: Args) {
         exercise_log.user_id = users.id
       WHERE exercise_log.user_id = ${userId}
       ${filter}
+      ORDER BY date_logged DESC
     `);
-    console.log({ data: data.rows })
     const exerciseLog = data.rows.map(serializeLogEntry);
     return exerciseLog;
   } catch (error) {

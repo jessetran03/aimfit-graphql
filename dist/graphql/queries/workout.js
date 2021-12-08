@@ -66,7 +66,6 @@ function getWorkout(parent, args) {
                     return [4 /*yield*/, db_1.default.query("\n      SELECT * FROM workouts\n      INNER JOIN users ON\n        workouts.user_id = " + userId + "\n      WHERE workouts.id = " + id + "\n    ")];
                 case 1:
                     data = _a.sent();
-                    console.log(data.rows);
                     if (data.rows.length) {
                         workout = serializeWorkout(data.rows[0]);
                         return [2 /*return*/, workout];
