@@ -70,19 +70,19 @@ var serializeExercise = function (exercise) { return ({
     muscle: exercise.muscle,
     name: exercise.exercise_name,
 }); };
-function getWorkouts(parent, args) {
+function getWorkouts(parent, args, context) {
     return __awaiter(this, void 0, void 0, function () {
-        var filter, id, userId, data, exerciseData, workoutExercises_1, workouts, workoutsFull, error_1;
+        var userId, filter, id, data, exerciseData, workoutExercises_1, workouts, workoutsFull, error_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 3, , 4]);
+                    userId = context.user;
                     filter = '';
                     if (args === null || args === void 0 ? void 0 : args.id) {
                         id = args.id;
                         filter = "AND workouts.id = " + id;
                     }
-                    userId = 1;
                     return [4 /*yield*/, db_1.default.query("\n      SELECT\n        workouts.id as id,\n        users.id as user_id,\n        day,\n        title,\n        user_name,\n        first_name,\n        last_name,\n        password\n      FROM workouts\n      INNER JOIN users ON\n        workouts.user_id = users.id\n      WHERE user_id = " + userId + "\n      " + filter + "\n    ")];
                 case 1:
                     data = _a.sent();

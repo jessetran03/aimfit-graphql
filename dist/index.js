@@ -46,6 +46,9 @@ var queries_1 = __importDefault(require("./graphql/queries"));
 var mutations_1 = __importDefault(require("./graphql/mutations"));
 var types_1 = __importDefault(require("./graphql/types"));
 var apollo_server_express_1 = require("apollo-server-express");
+var express_jwt_1 = __importDefault(require("express-jwt"));
+var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+var db_1 = __importDefault(require("./db"));
 var config_1 = require("./config");
 var startServer = function () { return __awaiter(void 0, void 0, void 0, function () {
     var app, server;
@@ -53,17 +56,36 @@ var startServer = function () { return __awaiter(void 0, void 0, void 0, functio
         switch (_a.label) {
             case 0:
                 app = (0, express_1.default)();
-                app.use((0, cors_1.default)());
+                app.use((0, cors_1.default)(), express_1.default.json(), (0, express_jwt_1.default)({
+                    secret: 'jwtsecret',
+                    algorithms: ['HS256'],
+                    credentialsRequired: false,
+                }));
                 server = new apollo_server_express_1.ApolloServer({
                     typeDefs: types_1.default,
                     resolvers: { Query: queries_1.default, Mutation: mutations_1.default },
+                    context: function (_a) {
+                        var req = _a.req;
+                        return req.user;
+                    },
                 });
                 return [4 /*yield*/, server.start()];
             case 1:
                 _a.sent();
                 server.applyMiddleware({ app: app, path: '/graphql' });
+                app.post('/login', function (req, res) {
+                    var _a = req.body, username = _a.username, password = _a.password;
+                    db_1.default.query("SELECT * FROM users WHERE user_name = '" + username + "'").then(function (data) {
+                        var user = data.rows[0];
+                        if (!(user && user.password === password)) {
+                            return res.sendStatus(401);
+                        }
+                        var token = jsonwebtoken_1.default.sign({ user: user.id }, 'jwtsecret');
+                        res.send({ token: token });
+                    });
+                });
                 app.listen({ port: config_1.PORT }, function () {
-                    console.log("\u2728\uD83D\uDE80 Server started on http://localhost:9000" + server.graphqlPath + " \uD83D\uDE80\u2728");
+                    console.log("\u2728\uD83D\uDE80 Server started on http://localhost:" + config_1.PORT + server.graphqlPath + " \uD83D\uDE80\u2728");
                 });
                 return [2 /*return*/];
         }
