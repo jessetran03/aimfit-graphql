@@ -79,13 +79,17 @@ var startServer = function () { return __awaiter(void 0, void 0, void 0, functio
                     db_1.default.query("SELECT * FROM users WHERE user_name = '" + username + "'").then(function (data) {
                         if (data.rowCount === 0) {
                             console.log('Username does not exist');
-                            return res.status(400).json({ error: 'Username does not exist' });
+                            return res.status(400).json({
+                                error: 'We could not find your username. Please check your username and try again.',
+                            });
                         }
                         var user = data.rows[0];
                         bcrypt_1.default.compare(password, user.password).then(function (match) {
                             if (!match) {
                                 console.log('Incorrect password');
-                                return res.status(400).json({ error: 'Incorrect password' });
+                                return res.status(400).json({
+                                    error: 'Sorry, the password you entered is incorrect. Please try again.',
+                                });
                             }
                             var token = jsonwebtoken_1.default.sign({ user: user.id }, 'jwtsecret');
                             res.send({ token: token });
