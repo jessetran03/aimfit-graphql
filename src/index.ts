@@ -39,13 +39,19 @@ const startServer = async () => {
       (data) => {
         if (data.rowCount === 0) {
           console.log('Username does not exist');
-          return res.status(400).json({ error: 'Username does not exist' });
+          return res.status(400).json({
+            error:
+              'We could not find your username. Please check your username and try again.',
+          });
         }
         const user = data.rows[0];
         bcrypt.compare(password, user.password).then((match) => {
           if (!match) {
             console.log('Incorrect password');
-            return res.status(400).json({ error: 'Incorrect password' });
+            return res.status(400).json({
+              error:
+                'Sorry, the password you entered is incorrect. Please try again.',
+            });
           }
           const token = jwt.sign({ user: user.id }, 'jwtsecret');
           res.send({ token });
