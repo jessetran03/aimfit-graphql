@@ -8,6 +8,7 @@ import { ApolloServer } from 'apollo-server-express';
 import expressJwt from 'express-jwt';
 import jwt from 'jsonwebtoken';
 import db from './db';
+import bcrypt from 'bcrypt';
 import { PORT } from './config';
 
 const startServer = async () => {
@@ -36,12 +37,19 @@ const startServer = async () => {
     const { username, password } = req.body;
     db.query(`SELECT * FROM users WHERE user_name = '${username}'`).then(
       (data) => {
-        const user = data.rows[0];
-        if (!(user && user.password === password)) {
-          return res.sendStatus(401);
+        if (data.rowCount === 0) {
+          console.log('Username does not exist');
+          return res.status(400).json({ error: 'Username does not exist' });
         }
-        const token = jwt.sign({ user: user.id }, 'jwtsecret');
-        res.send({ token });
+        const user = data.rows[0];
+        bcrypt.compare(password, user.password).then((match) => {
+          if (!match) {
+            console.log('Incorrect password');
+            return res.status(400).json({ error: 'Incorrect password' });
+          }
+          const token = jwt.sign({ user: user.id }, 'jwtsecret');
+          res.send({ token });
+        });
       },
     );
   });

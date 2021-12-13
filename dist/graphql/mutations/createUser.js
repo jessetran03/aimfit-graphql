@@ -39,25 +39,48 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var bcrypt_1 = __importDefault(require("bcrypt"));
 var db_1 = __importDefault(require("../.././db"));
 function createUser(parent, args) {
     return __awaiter(this, void 0, void 0, function () {
-        var _a, username, firstName, lastName, password, data, newUser, error_1;
+        var _a, username, firstName, lastName, password, userData, REGEX_UPPER_LOWER_NUMBER_SPECIAL, hashedPassword, data, newUser, error_1;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
-                    _b.trys.push([0, 2, , 3]);
-                    _a = args.input, username = _a.username, firstName = _a.firstName, lastName = _a.lastName;
-                    password = 'Testing';
-                    return [4 /*yield*/, db_1.default.query("\n      INSERT INTO users (user_name, first_name, last_name, password)\n      VALUES ('" + username + "', '" + firstName + "', '" + lastName + "', '" + password + "')\n      RETURNING *\n    ")];
+                    _b.trys.push([0, 4, , 5]);
+                    _a = args.input, username = _a.username, firstName = _a.firstName, lastName = _a.lastName, password = _a.password;
+                    return [4 /*yield*/, db_1.default.query("\n      SELECT 1\n      FROM users\n      WHERE users.user_name = '" + username + "';\n    ")];
                 case 1:
+                    userData = _b.sent();
+                    if (userData.rowCount > 0) {
+                        throw 'Username already exists';
+                    }
+                    REGEX_UPPER_LOWER_NUMBER_SPECIAL = /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&])[\S]+/;
+                    if (password.length < 8) {
+                        throw 'Password must be longer than 8 characters';
+                    }
+                    if (password.length > 72) {
+                        throw 'Password must be less than 72 characters';
+                    }
+                    if (password.startsWith(' ') || password.endsWith(' ')) {
+                        throw 'Password must not start or end with empty spaces';
+                    }
+                    if (!REGEX_UPPER_LOWER_NUMBER_SPECIAL.test(password)) {
+                        throw 'Password must contain one upper case, lower case, number and special character';
+                    }
+                    return [4 /*yield*/, bcrypt_1.default.hash(args.input.password, 12)];
+                case 2:
+                    hashedPassword = _b.sent();
+                    return [4 /*yield*/, db_1.default.query("\n      INSERT INTO users (user_name, first_name, last_name, password)\n      VALUES ('" + username + "', '" + firstName + "', '" + lastName + "', '" + hashedPassword + "')\n      RETURNING *;\n    ")];
+                case 3:
                     data = _b.sent();
                     newUser = serializeUser(data.rows[0]);
                     return [2 /*return*/, newUser];
-                case 2:
+                case 4:
                     error_1 = _b.sent();
+                    console.error(error_1);
                     throw error_1;
-                case 3: return [2 /*return*/];
+                case 5: return [2 /*return*/];
             }
         });
     });

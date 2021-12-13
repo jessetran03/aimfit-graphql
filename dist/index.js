@@ -49,6 +49,7 @@ var apollo_server_express_1 = require("apollo-server-express");
 var express_jwt_1 = __importDefault(require("express-jwt"));
 var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 var db_1 = __importDefault(require("./db"));
+var bcrypt_1 = __importDefault(require("bcrypt"));
 var config_1 = require("./config");
 var startServer = function () { return __awaiter(void 0, void 0, void 0, function () {
     var app, server;
@@ -76,12 +77,19 @@ var startServer = function () { return __awaiter(void 0, void 0, void 0, functio
                 app.post('/login', function (req, res) {
                     var _a = req.body, username = _a.username, password = _a.password;
                     db_1.default.query("SELECT * FROM users WHERE user_name = '" + username + "'").then(function (data) {
-                        var user = data.rows[0];
-                        if (!(user && user.password === password)) {
-                            return res.sendStatus(401);
+                        if (data.rowCount === 0) {
+                            console.log('Username does not exist');
+                            return res.status(400).json({ error: 'Username does not exist' });
                         }
-                        var token = jsonwebtoken_1.default.sign({ user: user.id }, 'jwtsecret');
-                        res.send({ token: token });
+                        var user = data.rows[0];
+                        bcrypt_1.default.compare(password, user.password).then(function (match) {
+                            if (!match) {
+                                console.log('Incorrect password');
+                                return res.status(400).json({ error: 'Incorrect password' });
+                            }
+                            var token = jsonwebtoken_1.default.sign({ user: user.id }, 'jwtsecret');
+                            res.send({ token: token });
+                        });
                     });
                 });
                 app.listen({ port: config_1.PORT }, function () {
