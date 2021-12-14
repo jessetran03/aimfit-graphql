@@ -39,19 +39,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var db_1 = __importDefault(require("../../db"));
-function addWorkoutExercise(parent, args) {
+var db_1 = __importDefault(require("../.././db"));
+function createWorkout(parent, args, context) {
     return __awaiter(this, void 0, void 0, function () {
-        var workoutId, exerciseId, data, message, error_1;
+        var id, day, title, userId, data, workoutTitle, message, error_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
-                    workoutId = args.workoutId, exerciseId = args.exerciseId;
-                    return [4 /*yield*/, db_1.default.query("\n      INSERT INTO workout_exercises (workout_id, exercise_id)\n      VALUES ('" + workoutId + "', '" + exerciseId + "')\n    ")];
+                    id = args.id, day = args.day, title = args.title;
+                    userId = context.user;
+                    return [4 /*yield*/, db_1.default.query("\n      UPDATE workouts\n      SET day = '" + day + "', title = '" + title + "'\n      WHERE id = " + id + " AND user_id = " + userId + "\n      RETURNING *\n    ")];
                 case 1:
                     data = _a.sent();
-                    message = 'Exercise has been added to workout.';
+                    workoutTitle = data.rows[0].title;
+                    message = workoutTitle + " has been updated.";
                     return [2 /*return*/, message];
                 case 2:
                     error_1 = _a.sent();
@@ -61,4 +63,4 @@ function addWorkoutExercise(parent, args) {
         });
     });
 }
-exports.default = addWorkoutExercise;
+exports.default = createWorkout;

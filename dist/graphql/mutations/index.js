@@ -9,6 +9,7 @@ var createExercise_1 = __importDefault(require("./createExercise"));
 var createUser_1 = __importDefault(require("./createUser"));
 var createWorkout_1 = __importDefault(require("./createWorkout"));
 var deleteWorkout_1 = __importDefault(require("./deleteWorkout"));
+var updateWorkout_1 = __importDefault(require("./updateWorkout"));
 var Mutation = {
     newWorkoutExercise: addWorkoutExercise_1.default,
     deleteWorkout: deleteWorkout_1.default,
@@ -16,5 +17,6 @@ var Mutation = {
     newLogEntry: addLogEntry_1.default,
     newUser: createUser_1.default,
     newWorkout: createWorkout_1.default,
+    updateWorkout: updateWorkout_1.default,
 };
 exports.default = Mutation;

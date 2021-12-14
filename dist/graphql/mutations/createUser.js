@@ -43,15 +43,15 @@ var bcrypt_1 = __importDefault(require("bcrypt"));
 var db_1 = __importDefault(require("../.././db"));
 function createUser(parent, args) {
     return __awaiter(this, void 0, void 0, function () {
-        var _a, username, firstName, lastName, password, userData, REGEX_UPPER_LOWER_NUMBER_SPECIAL, hashedPassword, data, newUser, error_1;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
+        var username, firstName, lastName, password, userData, REGEX_UPPER_LOWER_NUMBER_SPECIAL, hashedPassword, data, newUser, error_1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
                 case 0:
-                    _b.trys.push([0, 4, , 5]);
-                    _a = args.input, username = _a.username, firstName = _a.firstName, lastName = _a.lastName, password = _a.password;
+                    _a.trys.push([0, 4, , 5]);
+                    username = args.username, firstName = args.firstName, lastName = args.lastName, password = args.password;
                     return [4 /*yield*/, db_1.default.query("\n      SELECT 1\n      FROM users\n      WHERE users.user_name = '" + username + "';\n    ")];
                 case 1:
-                    userData = _b.sent();
+                    userData = _a.sent();
                     if (userData.rowCount > 0) {
                         throw 'Username already exists';
                     }
@@ -68,16 +68,16 @@ function createUser(parent, args) {
                     if (!REGEX_UPPER_LOWER_NUMBER_SPECIAL.test(password)) {
                         throw 'Password must contain one upper case, lower case, number and special character';
                     }
-                    return [4 /*yield*/, bcrypt_1.default.hash(args.input.password, 12)];
+                    return [4 /*yield*/, bcrypt_1.default.hash(args.password, 12)];
                 case 2:
-                    hashedPassword = _b.sent();
+                    hashedPassword = _a.sent();
                     return [4 /*yield*/, db_1.default.query("\n      INSERT INTO users (user_name, first_name, last_name, password)\n      VALUES ('" + username + "', '" + firstName + "', '" + lastName + "', '" + hashedPassword + "')\n      RETURNING *;\n    ")];
                 case 3:
-                    data = _b.sent();
+                    data = _a.sent();
                     newUser = serializeUser(data.rows[0]);
                     return [2 /*return*/, newUser];
                 case 4:
-                    error_1 = _b.sent();
+                    error_1 = _a.sent();
                     console.error(error_1);
                     throw error_1;
                 case 5: return [2 /*return*/];

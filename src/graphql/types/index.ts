@@ -19,7 +19,7 @@ const typeDefs = gql`
       lastName: String
       password: String
     ): User
-    newExercise(name: String, muscle: string): Exercise
+    newExercise(name: String, muscle: String): Exercise
     newLogEntry(
       exerciseId: ID!
       setCount: Float

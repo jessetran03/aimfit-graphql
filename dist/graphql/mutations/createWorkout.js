@@ -42,21 +42,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var db_1 = __importDefault(require("../.././db"));
 function createWorkout(parent, args, context) {
     return __awaiter(this, void 0, void 0, function () {
-        var _a, day, title, userId, data, workoutTitle, message, error_1;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
+        var day, title, userId, data, workoutTitle, message, error_1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
                 case 0:
-                    _b.trys.push([0, 2, , 3]);
-                    _a = args.input, day = _a.day, title = _a.title;
+                    _a.trys.push([0, 2, , 3]);
+                    day = args.day, title = args.title;
                     userId = context.user;
                     return [4 /*yield*/, db_1.default.query("\n      INSERT INTO workouts (user_id, day, title)\n      VALUES (" + userId + ", '" + day + "', '" + title + "')\n      RETURNING *\n    ")];
                 case 1:
-                    data = _b.sent();
+                    data = _a.sent();
                     workoutTitle = data.rows[0].title;
                     message = workoutTitle + " has been created.";
                     return [2 /*return*/, message];
                 case 2:
-                    error_1 = _b.sent();
+                    error_1 = _a.sent();
                     throw error_1;
                 case 3: return [2 /*return*/];
             }

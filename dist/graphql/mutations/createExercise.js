@@ -40,21 +40,26 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var db_1 = __importDefault(require("../.././db"));
+var serializeExercise = function (exercise) { return ({
+    id: exercise.id,
+    name: exercise.exercise_name,
+    muscle: exercise.muscle,
+}); };
 function createExercise(parent, args) {
     return __awaiter(this, void 0, void 0, function () {
-        var _a, name_1, muscle, data, newExercise, error_1;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
+        var name_1, muscle, data, newExercise, error_1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
                 case 0:
-                    _b.trys.push([0, 2, , 3]);
-                    _a = args.input, name_1 = _a.name, muscle = _a.muscle;
+                    _a.trys.push([0, 2, , 3]);
+                    name_1 = args.name, muscle = args.muscle;
                     return [4 /*yield*/, db_1.default.query("\n      INSERT INTO exercises (exercise_name, muscle)\n      VALUES ('" + name_1 + "', '" + muscle + "')\n      RETURNING *\n    ")];
                 case 1:
-                    data = _b.sent();
+                    data = _a.sent();
                     newExercise = serializeExercise(data.rows[0]);
                     return [2 /*return*/, newExercise];
                 case 2:
-                    error_1 = _b.sent();
+                    error_1 = _a.sent();
                     throw error_1;
                 case 3: return [2 /*return*/];
             }
@@ -62,8 +67,3 @@ function createExercise(parent, args) {
     });
 }
 exports.default = createExercise;
-var serializeExercise = function (exercise) { return ({
-    id: exercise.id,
-    name: exercise.exercise_name,
-    muscle: exercise.muscle,
-}); };
