@@ -54,7 +54,7 @@ var serializeWorkout = function (workout) { return ({
     title: workout.title,
     day: workout.day,
 }); };
-function getWorkout(parent, args) {
+function getWorkout(parent, args, context) {
     return __awaiter(this, void 0, void 0, function () {
         var id, userId, data, workout, error_1;
         return __generator(this, function (_a) {
@@ -62,7 +62,7 @@ function getWorkout(parent, args) {
                 case 0:
                     _a.trys.push([0, 2, , 3]);
                     id = args.id;
-                    userId = 1;
+                    userId = context.user;
                     return [4 /*yield*/, db_1.default.query("\n      SELECT * FROM workouts\n      INNER JOIN users ON\n        workouts.user_id = " + userId + "\n      WHERE workouts.id = " + id + "\n    ")];
                 case 1:
                     data = _a.sent();

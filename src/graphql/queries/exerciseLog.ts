@@ -17,21 +17,25 @@ const serializeLogEntry = (logEntry: any) => ({
   setCount: logEntry.set_count,
   repCount: logEntry.rep_count,
   weightCount: logEntry.weight_count,
-  dateLogged: logEntry.date_logged
+  dateLogged: logEntry.date_logged,
 });
 
 interface Args {
   exerciseId: string;
 }
 
-export default async function getExerciseLog(parent: any, args: Args) {
+export default async function getExerciseLog(
+  parent: any,
+  args: Args,
+  context: any,
+) {
   let filter = '';
   if (args?.exerciseId) {
     const exerciseId = args.exerciseId;
     filter = `AND exercise_log.exercise_id = ${exerciseId}`;
   }
   try {
-    const userId = 1;
+    const userId = context.user;
     const data = await db.query(`
       SELECT
         exercise_log.id as id,

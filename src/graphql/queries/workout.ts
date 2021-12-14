@@ -19,10 +19,14 @@ interface Args {
   id: string;
 }
 
-export default async function getWorkout(parent: any, args: Args) {
+export default async function getWorkout(
+  parent: any,
+  args: Args,
+  context: any,
+) {
   try {
     const { id } = args;
-    const userId = 1;
+    const userId = context.user;
     const data = await db.query(`
       SELECT * FROM workouts
       INNER JOIN users ON

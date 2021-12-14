@@ -40,24 +40,23 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var db_1 = __importDefault(require("../.././db"));
-function createWorkout(parent, args, _a) {
-    var user = _a.user;
+function createWorkout(parent, args, context) {
     return __awaiter(this, void 0, void 0, function () {
-        var _b, day, title, userId, data, workoutTitle, message, error_1;
-        return __generator(this, function (_c) {
-            switch (_c.label) {
+        var _a, day, title, userId, data, workoutTitle, message, error_1;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
                 case 0:
-                    _c.trys.push([0, 2, , 3]);
-                    _b = args.input, day = _b.day, title = _b.title;
-                    userId = 1;
+                    _b.trys.push([0, 2, , 3]);
+                    _a = args.input, day = _a.day, title = _a.title;
+                    userId = context.user;
                     return [4 /*yield*/, db_1.default.query("\n      INSERT INTO workouts (user_id, day, title)\n      VALUES (" + userId + ", '" + day + "', '" + title + "')\n      RETURNING *\n    ")];
                 case 1:
-                    data = _c.sent();
+                    data = _b.sent();
                     workoutTitle = data.rows[0].title;
                     message = workoutTitle + " has been created.";
                     return [2 /*return*/, message];
                 case 2:
-                    error_1 = _c.sent();
+                    error_1 = _b.sent();
                     throw error_1;
                 case 3: return [2 /*return*/];
             }

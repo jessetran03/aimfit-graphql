@@ -57,9 +57,9 @@ var serializeLogEntry = function (logEntry) { return ({
     setCount: logEntry.set_count,
     repCount: logEntry.rep_count,
     weightCount: logEntry.weight_count,
-    dateLogged: logEntry.date_logged
+    dateLogged: logEntry.date_logged,
 }); };
-function getExerciseLog(parent, args) {
+function getExerciseLog(parent, args, context) {
     return __awaiter(this, void 0, void 0, function () {
         var filter, exerciseId, userId, data, exerciseLog, error_1;
         return __generator(this, function (_a) {
@@ -73,7 +73,7 @@ function getExerciseLog(parent, args) {
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);
-                    userId = 1;
+                    userId = context.user;
                     return [4 /*yield*/, db_1.default.query("\n      SELECT\n        exercise_log.id as id,\n        exercises.id as exercise_id,\n        users.id as user_id,\n        set_count,\n        rep_count,\n        weight_count,\n        date_logged,\n        exercise_name,\n        muscle,\n        user_name,\n        first_name,\n        last_name,\n        password\n      FROM exercise_log\n      INNER JOIN exercises ON\n        exercise_log.exercise_id = exercises.id\n      INNER JOIN users ON\n        exercise_log.user_id = users.id\n      WHERE exercise_log.user_id = " + userId + "\n      " + filter + "\n      ORDER BY date_logged DESC\n    ")];
                 case 2:
                     data = _a.sent();
