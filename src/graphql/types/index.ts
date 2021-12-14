@@ -13,12 +13,23 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    newUser(input: CreateUserInput): User
-    newExercise(input: CreateExerciseInput): Exercise
-    newLogEntry(input: AddLogEntry): String
-    newWorkout(input: CreateWorkoutInput): String
-    newWorkoutExercise(input: AddWorkoutExerciseInput): String
+    newUser(
+      username: String
+      firstName: String
+      lastName: String
+      password: String
+    ): User
+    newExercise(name: String, muscle: string): Exercise
+    newLogEntry(
+      exerciseId: ID!
+      setCount: Float
+      repCount: Float
+      weightCount: Float
+    ): String
+    newWorkout(day: String, title: String): String
+    newWorkoutExercise(workoutId: ID!, exerciseId: ID!): String
     deleteWorkout(id: ID!): String
+    updateWorkout(id: ID!, day: String!, title: String!): String
   }
 
   type User {
@@ -57,35 +68,6 @@ const typeDefs = gql`
     repCount: Float
     weightCount: Float
     dateLogged: String
-  }
-
-  input AddLogEntry {
-    exerciseId: ID!
-    setCount: Float
-    repCount: Float
-    weightCount: Float
-  }
-
-  input AddWorkoutExerciseInput {
-    workoutId: ID!
-    exerciseId: ID!
-  }
-
-  input CreateUserInput {
-    username: String
-    firstName: String
-    lastName: String
-    password: String
-  }
-
-  input CreateExerciseInput {
-    name: String
-    muscle: String
-  }
-
-  input CreateWorkoutInput {
-    day: String
-    title: String
   }
 `;
 

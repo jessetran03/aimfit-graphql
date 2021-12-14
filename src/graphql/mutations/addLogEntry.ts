@@ -1,9 +1,6 @@
 import db from '../../db';
 
 interface Args {
-  input: Input;
-}
-interface Input {
   exerciseId: number;
   setCount: number;
   repCount: number;
@@ -15,7 +12,7 @@ export default async function addLogEntry(
   context: any,
 ) {
   try {
-    const { exerciseId, setCount, repCount, weightCount } = args.input;
+    const { exerciseId, setCount, repCount, weightCount } = args;
     const userId = context.user;
     const data = await db.query(`
       INSERT INTO exercise_log (exercise_id, user_id, set_count, rep_count, weight_count)

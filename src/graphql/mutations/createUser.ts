@@ -1,9 +1,16 @@
 import bcrypt from 'bcrypt';
 import db from '../.././db';
 
+interface Args {
+  username: string;
+  firstName: string;
+  lastName: string;
+  password: string;
+}
+
 export default async function createUser(parent: any, args: Args) {
   try {
-    const { username, firstName, lastName, password } = args.input;
+    const { username, firstName, lastName, password } = args;
     const userData = await db.query(`
       SELECT 1
       FROM users
@@ -29,7 +36,7 @@ export default async function createUser(parent: any, args: Args) {
       throw 'Password must contain one upper case, lower case, number and special character';
     }
 
-    const hashedPassword = await bcrypt.hash(args.input.password, 12);
+    const hashedPassword = await bcrypt.hash(args.password, 12);
     const data = await db.query(`
       INSERT INTO users (user_name, first_name, last_name, password)
       VALUES ('${username}', '${firstName}', '${lastName}', '${hashedPassword}')
@@ -51,14 +58,3 @@ const serializeUser = (user: any) => ({
   password: user.password,
   dateCreated: user.date_created,
 });
-
-interface Args {
-  input: Input;
-}
-
-interface Input {
-  username: string;
-  firstName: string;
-  lastName: string;
-  password: string;
-}

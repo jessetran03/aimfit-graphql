@@ -1,6 +1,7 @@
 import db from '../.././db';
 
 interface Args {
+  id: number;
   day: string;
   title: string;
 }
@@ -11,15 +12,16 @@ export default async function createWorkout(
   context: any,
 ) {
   try {
-    const { day, title } = args;
+    const { id, day, title } = args;
     const userId = context.user;
     const data = await db.query(`
-      INSERT INTO workouts (user_id, day, title)
-      VALUES (${userId}, '${day}', '${title}')
+      UPDATE workouts
+      SET day = '${day}', title = '${title}'
+      WHERE id = ${id} AND user_id = ${userId}
       RETURNING *
     `);
     const workoutTitle = data.rows[0].title;
-    const message = `${workoutTitle} has been created.`;
+    const message = `${workoutTitle} has been updated.`;
     return message;
   } catch (error) {
     throw error;

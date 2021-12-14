@@ -4,6 +4,7 @@ import createExercise from './createExercise';
 import createUser from './createUser';
 import createWorkout from './createWorkout';
 import deleteWorkout from './deleteWorkout';
+import updateWorkout from './updateWorkout';
 
 const Mutation = {
   newWorkoutExercise: addWorkoutExercise,
@@ -12,6 +13,7 @@ const Mutation = {
   newLogEntry: addLogEntry,
   newUser: createUser,
   newWorkout: createWorkout,
+  updateWorkout: updateWorkout,
 };
 
 export default Mutation;
