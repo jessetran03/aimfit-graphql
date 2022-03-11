@@ -29,11 +29,9 @@ export default async function getExerciseLog(
   args: Args,
   context: any,
 ) {
-  let filter = '';
-  if (args?.exerciseId) {
-    const exerciseId = args.exerciseId;
-    filter = `AND exercise_log.exercise_id = ${exerciseId}`;
-  }
+  const filter = args?.exerciseId
+    ? `AND exercise_log.exercise_id = ${args.exerciseId}`
+    : '';
   try {
     const userId = context.user;
     const data = await db.query(`
