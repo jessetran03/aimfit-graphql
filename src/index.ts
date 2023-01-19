@@ -14,7 +14,9 @@ import { PORT } from './config';
 const startServer = async () => {
   const app = express();
   app.use(
-    cors(),
+    cors({
+      credentials: true,
+    }),
     express.json(),
     expressJwt({
       secret: 'jwtsecret',

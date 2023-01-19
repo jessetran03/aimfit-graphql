@@ -61,15 +61,13 @@ var serializeLogEntry = function (logEntry) { return ({
 }); };
 function getExerciseLog(parent, args, context) {
     return __awaiter(this, void 0, void 0, function () {
-        var filter, exerciseId, userId, data, exerciseLog, error_1;
+        var filter, userId, data, exerciseLog, error_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    filter = '';
-                    if (args === null || args === void 0 ? void 0 : args.exerciseId) {
-                        exerciseId = args.exerciseId;
-                        filter = "AND exercise_log.exercise_id = " + exerciseId;
-                    }
+                    filter = (args === null || args === void 0 ? void 0 : args.exerciseId)
+                        ? "AND exercise_log.exercise_id = " + args.exerciseId
+                        : '';
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);

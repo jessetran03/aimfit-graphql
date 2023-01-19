@@ -57,7 +57,9 @@ var startServer = function () { return __awaiter(void 0, void 0, void 0, functio
         switch (_a.label) {
             case 0:
                 app = (0, express_1.default)();
-                app.use((0, cors_1.default)(), express_1.default.json(), (0, express_jwt_1.default)({
+                app.use((0, cors_1.default)({
+                    credentials: true,
+                }), express_1.default.json(), (0, express_jwt_1.default)({
                     secret: 'jwtsecret',
                     algorithms: ['HS256'],
                     credentialsRequired: false,
